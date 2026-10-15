@@ -1,0 +1,11 @@
+1
+00:00:01,000 --> 00:00:03,000
+Welcome to Luma Harbor.
+
+2
+00:00:02,500 --> 00:00:04,000
+DRAFT ONLY: the paper moon rises.
+
+3
+00:00:04,500 --> 00:00:05,300
+The tiny lantern committee has misplaced every map of the imaginary bay.

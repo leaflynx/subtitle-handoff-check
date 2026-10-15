@@ -1,0 +1,45 @@
+name: Workflow request
+description: Describe a recurring subtitle handoff problem or request client-specific checks.
+title: "[Workflow] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public issue. Do not upload customer subtitles, personal information, secrets or confidential delivery specifications. Use invented examples only. This form requests a discussion, not a purchase or delivery commitment. Please do not post payment details.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What goes wrong in your current handoff?
+      description: Describe one real recurring problem and its consequence, without identifying customers.
+    validations:
+      required: true
+  - type: input
+    id: frequency
+    attributes:
+      label: How often do you encounter it?
+      placeholder: For example, several batches each week
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: How do you check this today?
+      description: Existing tools, manual steps, and what this checker is missing.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Invented example of the expected rule and output
+      description: Do not attach real client assets or private material.
+  - type: dropdown
+    id: interest
+    attributes:
+      label: What would help?
+      options:
+        - A general improvement to the free prototype
+        - A discussion about a paid custom configuration, if scope and price fit
+        - I am not sure yet
+    validations:
+      required: true

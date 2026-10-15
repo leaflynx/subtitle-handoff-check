@@ -1,0 +1,5 @@
+{
+  "expectedFiles": ["harbor.en.srt", "harbor.fr.vtt", "harbor.es.srt"],
+  "requiredTerms": ["Luma"],
+  "forbiddenTerms": ["DRAFT ONLY"]
+}

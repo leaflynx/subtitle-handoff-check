@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102d32">
+  <meta name="description" content="A private, offline subtitle technical preflight prototype. Check local SRT and VTT files against an explicit handoff checklist.">
+  <title>Subtitle Handoff Check — Local preflight</title>
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="qc.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to workspace</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Subtitle Handoff Check home"><img src="assets/mark.svg" width="40" height="40" alt=""><span>Subtitle<br><strong>Handoff Check</strong></span></a>
+    <div class="header-meta"><span class="local-indicator" aria-hidden="true"></span> Local workspace <span class="prototype-tag">PROTOTYPE</span></div>
+  </header>
+  <main id="top">
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">THE LAST TECHNICAL PASS</p><h1 id="page-title">Before the handoff,<br>check the details.</h1><p class="intro-copy">Inspect subtitle timing, readability and your file checklist. Keep the decisions — and the files — on your machine.</p></div>
+      <aside class="privacy-card" aria-label="Privacy promise"><span class="privacy-symbol" aria-hidden="true">↳</span><div><h2>Your files stay here.</h2><p>No upload. No account. No analytics. Files are read in this browser tab, not sent to a server. No network is needed.</p><p class="small">Nothing is saved by the app unless you download a report.</p></div></aside>
+    </section>
+
+    <form id="check-form" novalidate>
+      <div id="workspace" class="workspace" tabindex="-1">
+        <section class="panel files-panel" aria-labelledby="files-title">
+          <div class="section-heading"><div><p class="step">01 / SOURCE</p><h2 id="files-title">Subtitle files</h2></div><span class="format-tag">SRT + VTT</span></div>
+          <fieldset class="unboxed" id="files-controls"><legend class="sr-only">Choose subtitle files</legend>
+            <div class="file-picker"><span class="file-glyph" aria-hidden="true">[ cc ]</span><label for="subtitle-files">Choose files from your device</label><p id="file-help">Select multiple .srt or .vtt files. UTF-8 text recommended.</p><input id="subtitle-files" type="file" accept=".srt,.vtt" multiple aria-describedby="file-help file-limits"><p class="small" id="file-limits">Up to 100 files · 5 MiB per file · 20 MiB per batch.<br>Invalid batches are rejected in full; nothing is silently skipped.</p></div>
+            <div class="file-list-heading"><span id="selection-label">No files selected</span><span class="small" id="selection-size"></span></div>
+            <ul id="file-list" class="file-list" aria-label="Selected files"></ul>
+            <div class="demo-block"><div><strong>Try a deliberately imperfect handoff.</strong><p>Original fictional clips with a missing file, overlap, forbidden term and fast reading.</p></div><button id="demo-button" type="button" class="button button-secondary">Run fictional demo <span aria-hidden="true">↗</span></button></div>
+          </fieldset>
+        </section>
+
+        <section class="panel checklist-panel" aria-labelledby="checklist-title">
+          <div class="section-heading"><div><p class="step">02 / EXPECTATIONS</p><h2 id="checklist-title">Handoff checklist</h2></div><span class="optional-tag">OPTIONAL</span></div>
+          <fieldset class="unboxed" id="manifest-controls"><legend class="sr-only">Expected files and literal terms</legend>
+            <label for="expected-files">Expected filenames</label><textarea id="expected-files" rows="3" spellcheck="false" placeholder="chapter-01.en.srt&#10;chapter-01.fr.vtt" aria-describedby="expected-help"></textarea><p class="field-help" id="expected-help">One filename per line, including its extension. Names match exactly apart from letter case.</p>
+            <div class="term-grid"><div><label for="required-terms">Required terms</label><textarea id="required-terms" rows="3" spellcheck="false" placeholder="Approved product name" aria-describedby="term-help"></textarea></div><div><label for="forbidden-terms">Forbidden terms</label><textarea id="forbidden-terms" rows="3" spellcheck="false" placeholder="DRAFT ONLY" aria-describedby="term-help"></textarea></div></div>
+            <p class="field-help" id="term-help">One term per line. Required and forbidden checks use literal, case-insensitive substrings in each file. Not word-boundary, contextual or linguistic certification. Blank lines are ignored; surrounding whitespace is trimmed.</p>
+          </fieldset>
+        </section>
+
+        <section class="panel profile-panel" aria-labelledby="profile-title">
+          <div class="section-heading"><div><p class="step">03 / THRESHOLDS</p><h2 id="profile-title">Reading profile</h2></div><span class="optional-tag">EDITABLE DEFAULTS</span></div>
+          <fieldset class="unboxed profile-grid" id="profile-controls"><legend class="sr-only">Technical check thresholds</legend>
+            <div><label for="max-cps">Max. characters / second</label><div class="input-unit"><input id="max-cps" name="maxCps" type="number" value="20" min="0" step="any" required inputmode="decimal"><span>CPS</span></div></div>
+            <div><label for="max-line-length">Max. line length</label><div class="input-unit"><input id="max-line-length" name="maxLineLength" type="number" value="42" min="1" step="1" required inputmode="numeric"><span>chars</span></div></div>
+            <div><label for="max-lines">Max. lines / cue</label><div class="input-unit"><input id="max-lines" name="maxLines" type="number" value="2" min="1" step="1" required inputmode="numeric"><span>lines</span></div></div>
+            <div><label for="min-duration">Min. cue duration</label><div class="input-unit"><input id="min-duration" name="minDurationMs" type="number" value="600" min="0" step="any" required inputmode="decimal"><span>ms</span></div></div>
+            <div><label for="max-duration">Max. cue duration</label><div class="input-unit"><input id="max-duration" name="maxDurationMs" type="number" value="7000" min="0" step="any" required inputmode="decimal"><span>ms</span></div></div>
+          </fieldset>
+          <p class="field-help">These are working thresholds, not a platform specification. Line length and line count must be positive whole numbers; other thresholds may be zero. Maximum duration must be at least the minimum.</p>
+        </section>
+      </div>
+      <div class="action-bar"><p>Technical preflight.<br><span>Human review is still part of the handoff.</span></p><div class="actions"><button type="button" class="button button-quiet" id="reset-button">Reset workspace</button><button type="submit" class="button button-primary" id="check-button">Check files <span aria-hidden="true">→</span></button></div></div>
+    </form>
+    <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">Ready when you are. Choose subtitle files or run the fictional demo.</div>
+
+    <section id="results" class="results panel" aria-labelledby="results-title" hidden>
+      <div class="section-heading results-heading"><div><p class="step">04 / FINDINGS</p><h2 id="results-title" tabindex="-1">Preflight report</h2></div><div class="actions"><button id="json-download" class="button button-secondary" type="button" disabled>Export JSON</button><button id="csv-download" class="button button-secondary" type="button" disabled>Export CSV</button></div></div>
+      <div class="summary-grid"><div><span class="stat" id="file-count">0</span><span>Files checked</span></div><div><span class="stat" id="cue-count">0</span><span>Cues found</span></div><div class="error-stat"><span class="stat" id="error-count">0</span><span>Errors</span></div><div class="warning-stat"><span class="stat" id="warning-count">0</span><span>Warnings</span></div></div>
+      <div class="filter-bar"><div class="filter-fields"><div><label for="severity-filter">Severity</label><select id="severity-filter"><option value="all">All severities</option><option value="error">Errors</option><option value="warning">Warnings</option></select></div><div><label for="code-filter">Issue code</label><select id="code-filter"><option value="all">All codes</option></select></div></div><p id="visible-count" class="small" aria-live="polite"></p></div>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Preflight issues; scroll horizontally on small screens"><table><caption class="sr-only">Technical issues in the selected subtitle files</caption><thead><tr><th scope="col">Severity</th><th scope="col">Code</th><th scope="col">File / cue</th><th scope="col">Finding</th></tr></thead><tbody id="issues-body"></tbody></table></div>
+      <p id="empty-results" class="empty-results" hidden></p><p class="report-note">The table shows at most the first 200 matching issues. Filters affect this table only. Downloads include every issue, including undisplayed rows, and are generated locally. A report with no findings is not certification.</p>
+    </section>
+
+    <section class="limitations" aria-labelledby="limits-title"><div><p class="eyebrow">KEEP THE SCOPE CLEAR</p><h2 id="limits-title">A technical check,<br>not a final sign-off.</h2></div><div><p>This prototype does not compare subtitles with audio or video, certify translation quality, or guarantee universal delivery compliance. Automated text and timing checks can miss problems and flag intentional choices.</p><p>Review findings against the actual destination specification. Required terms can appear in the wrong context; literal matching cannot judge meaning.</p><p class="project-status"><strong>Project status:</strong> Experimental local tool. Commercial workflow customization is not yet available to purchase. There is no checkout.</p></div></section>
+  </main>
+  <footer><span>Subtitle Handoff Check</span><span>Local by design. Explicit about its limits.</span></footer>
+</body>
+</html>
